@@ -24,19 +24,19 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
         setupRecyclerView()
 
-        newsAdapter.setOnItemClickListner {
-            val bundle = Bundle().apply {
-                putSerializable("article", it)
-            }
-            findNavController().navigate(
-                R.id.action_savedNewsFragment_to_articleFragment,
-                bundle
-            )
-        }
+//        newsAdapter.setOnItemClickListener {
+//            val bundle = Bundle().apply {
+//                putSerializable("article", it)
+//            }
+//            findNavController().navigate(
+//                R.id.action_savedNewsFragment_to_articleFragment,
+//                bundle
+//            )
+//        }
     }
 
     private fun setupRecyclerView(){
-        newsAdapter = NewsAdapter()
+        newsAdapter = NewsAdapter(viewModel)
         binding.rvSavedNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)

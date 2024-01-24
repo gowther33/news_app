@@ -18,7 +18,6 @@ import com.example.news_app.adapters.NewsAdapter
 import com.example.news_app.databinding.FragmentBreakingNewsBinding
 import com.example.news_app.db.ArticleDatabase
 import com.example.news_app.repository.NewsRepository
-import com.example.news_app.ui.NewsActivity
 
 
 import com.example.news_app.ui.NewsViewModel
@@ -53,16 +52,25 @@ class BreakingNewsFragment : Fragment() {
 
         setupRecyclerView()
 
-        newsAdapter.setOnItemClickListner {
+
+        viewModel.articleClicked.observe(viewLifecycleOwner){
             Toast.makeText(requireContext(), "Item Clicked", Toast.LENGTH_SHORT)
-            val bundle = Bundle().apply {
-                putSerializable("article", it)
-            }
-            findNavController().navigate(
-                R.id.action_breakingNewsFragment_to_articleFragment,
-                bundle
-            )
+            val action = BreakingNewsFragmentDirections.actionBreakingNewsFragmentToArticleFragment(it)
+            findNavController().navigate(action)
         }
+
+//        newsAdapter.setOnItemClickListener {
+//            Toast.makeText(requireContext(), "Item Clicked", Toast.LENGTH_SHORT)
+////            val bundle = Bundle().apply {
+////                putSerializable("article", it)
+////            }
+////            findNavController().navigate(
+////                R.id.action_breakingNewsFragment_to_articleFragment,
+////                bundle
+////            )
+//            val action = BreakingNewsFragmentDirections.actionBreakingNewsFragmentToArticleFragment(it)
+//            findNavController().navigate(action)
+//        }
 
         viewModel.breakingNews.observe(
             viewLifecycleOwner,
@@ -78,7 +86,7 @@ class BreakingNewsFragment : Fragment() {
                     is Resource.Error -> {
                         hideProgressBar()
                         response.message?.let { message ->
-                            Log.e(TAG, "An error occured: $message")
+                            Log.e(TAG, "An error occurred: $message")
                         }
                     }
                     is Resource.Loading -> {
@@ -98,7 +106,7 @@ class BreakingNewsFragment : Fragment() {
     }
 
     private fun setupRecyclerView(){
-        newsAdapter = NewsAdapter()
+        newsAdapter = NewsAdapter(viewModel)
         binding.rvBreakingNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)

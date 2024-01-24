@@ -33,15 +33,15 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
         setupRecyclerView()
 
-        newsAdapter.setOnItemClickListner {
-            val bundle = Bundle().apply {
-                putSerializable("article", it)
-            }
-            findNavController().navigate(
-                R.id.action_searchNewsFragment_to_articleFragment,
-                bundle
-            )
-        }
+//        newsAdapter.setOnItemClickListener {
+//            val bundle = Bundle().apply {
+//                putSerializable("article", it)
+//            }
+//            findNavController().navigate(
+//                R.id.action_searchNewsFragment_to_articleFragment,
+//                bundle
+//            )
+//        }
 
         var job : Job? = null
         binding.etSearch.addTextChangedListener {editable ->
@@ -91,7 +91,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
     }
 
     private fun setupRecyclerView(){
-        newsAdapter = NewsAdapter()
+        newsAdapter = NewsAdapter(viewModel)
         binding.rvSearchNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
